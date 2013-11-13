@@ -2,17 +2,25 @@
 <html>
 <head>
   <title>Chagua</title>
+ 
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+ 
 </head>
 <body>
 <h1>Chaguo lako</h1>
-
+<% if user_is_logged_in? %>
+	<%= session[:user].username %>
+	<%= link_to "polls", polls_path %>
+	<%= link_to "log_out", log_out_path %>
+<%end%>
 <%= link_to image_tag("/assets/NDS.jpg"), root_path, :class =>"logo"%>
+
 
 <hr/>
 <%= yield %>
+</body> 
 
-</body>
+
 </html>

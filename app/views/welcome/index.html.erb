@@ -1,5 +1,17 @@
-<h2>Welcome to chaguo Lako </h2>
-<%= link_to "Register", new_voter_path %>
-<p>Register to have your opinion </p>
+<h2>Welcome to chaguo Lako, Whatsup! </h2>
+
 <p id="notice"><%= notice %></p>
+<% if admin_is_logged_in? %>
+<%= link_to "voters", voters_path %>
+
+<% end %>
+<% if !user_is_logged_in? %>
+<%= link_to "sign in", sessions_new_path %>
+<%= link_to "Register", new_voter_path %>
+
+<p>Register to have your opinion </p>
+
+<% end %>
+
+
 

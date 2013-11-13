@@ -1,10 +1,16 @@
 class VotersController < ApplicationController
+  before_action :authorise_admin, only:[:index, :show]
   before_action :set_voter, only: [:show, :edit, :update, :destroy]
 
   # GET /voters
   # GET /voters.json
   def index
-    @voters = Voter.all
+    if  !view_context.admin_is_logged_in?
+      redirect_to new_session_path
+    else
+      @voters = Voter.all.order("approved")
+
+      end
   end
 
   # GET /voters/1
@@ -28,7 +34,7 @@ class VotersController < ApplicationController
 
     respond_to do |format|
       if @voter.save
-        format.html { redirect_to root_path, notice: "Thanks  for registering.#{@voter.username.upercase}We will get back after aprroval"}
+        format.html { redirect_to root_path, notice: "Thanks  for registering.#{@voter.username}We will get back after aprroval"}
         format.json { render action: 'show', status: :created, location: @voter }
       else
         format.html { render action: 'new' }
@@ -48,7 +54,16 @@ class VotersController < ApplicationController
         format.html { render action: 'edit' }
         format.json { render json: @voter.errors, status: :unprocessable_entity }
       end
+
     end
+  end
+
+  def approve
+     @voter = Voter.find(params[:id])
+     @voter.approved = true
+     @voter.save!
+     VoterMailer.approval_email(@voter).deliver
+    redirect_to voters_path, notice: 'Voter was successfully approved'
   end
 
   # DELETE /voters/1

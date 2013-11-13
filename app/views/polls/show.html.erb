@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @poll.question %>
+</p>
+
+<p>
+  <strong>start_date:</strong>
+  <%= @poll.start_date %>
+</p>
+
+<p>
+  <strong>Deadline:</strong>
+  <%= @poll.deadline %>
+</p>
+
+<p>
+  <strong>Admin:</strong>
+  <%= @poll.admin.username %>
+</p>
+
+<%if admin_is_logged_in? %>
+<%= link_to 'Edit', edit_poll_path(@poll) %> |
+<%= link_to 'Back', polls_path %>
+<%end%>
+
+<%if admin_is_logged_in? %>
+<h2>Options</h2>
+<ul>
+	<%@poll.options.each do|option| %>
+	<li>
+		<%=option.name %>
+	</li>
+	<%end%>
+</ul>
+<%end%>
+
+<%if admin_is_logged_in? %>
+
+<%= form_for([@poll,@poll.options.build]) do |f| %>
+
+<%= f.label :name %>
+    <%= f.text_field :name %>
+    <%= f.submit %>
+  <%end%>
+
+
+<% end %>

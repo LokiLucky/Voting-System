@@ -1,8 +1,17 @@
 Chagua::Application.routes.draw do
+  resources :options
+
+  resources :polls do
+    resources :options
+  end
+
+  get "sessions/new"
   get "welcome/index"
   get "welcome/about"
-  resources :voters
+  get "log_out" => "sessions#destroy", :as => "log_out"
+  resources :voters, :sessions, :votes
   root 'welcome#index'
+  match "/voters/:id/approve "=> "voters#approve",:as =>"voter_approve",via: [:post]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
