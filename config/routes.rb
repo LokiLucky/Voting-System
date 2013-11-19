@@ -1,4 +1,6 @@
 Chagua::Application.routes.draw do
+  resources :posts
+
   resources :options
 
   resources :polls do
